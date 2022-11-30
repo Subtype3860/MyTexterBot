@@ -33,7 +33,7 @@ namespace MyTexterBot
             services.AddTransient<TextMessageController>();
             services.AddTransient<VoiceMessageController>();
             services.AddTransient<InlineKeyboardController>();
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken!));
             services.AddSingleton<IStorage, MemoryStorage>();
             services.AddSingleton<IFileHandler, AudioFileHandler>();
             services.AddHostedService<Bot>();
@@ -43,8 +43,8 @@ namespace MyTexterBot
         {
             return new AppSettings()
             {
-                DownloadsFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/Downloads",
-                BotToken = "5681894086:AAGto1JxL-s7KNqqbJOMJnqoFUVHSpyPGM4",
+                DownloadsFolder = "D:/Users/boora/Downloads/",
+                BotToken = "5648630742:AAGhENBxrEO-rxayfXHZArCQ1hkvDS_HxeA",
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
                 OutputAudioFormat = "wav",

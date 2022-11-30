@@ -21,4 +21,8 @@ public class AppSettings
     public string? InputAudioFormat { get; set; }
 
     public string? OutputAudioFormat { get; set; }
+    /// <summary>
+    /// Битрейт аудио при загрузке
+    /// </summary>
+    public float InputAudioBitrate { get; set; }
 }

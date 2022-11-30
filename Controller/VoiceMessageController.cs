@@ -12,13 +12,13 @@ namespace MyTexterBot.Controller
 {
     internal class VoiceMessageController
     {
-        private readonly IStorage _storage;
+        private readonly IStorage _memoryMemoryStorage;
         private readonly ITelegramBotClient _telegramClient;
         private readonly IFileHandler _audioFileHandler;
 
-        public VoiceMessageController(IStorage storage,ITelegramBotClient telegramBotClient, IFileHandler audioFileHandler)
+        public VoiceMessageController(IStorage memoryStorage,ITelegramBotClient telegramBotClient, IFileHandler audioFileHandler)
         {
-            _storage = storage;
+            _memoryMemoryStorage = memoryStorage;
             _telegramClient = telegramBotClient;
             _audioFileHandler = audioFileHandler;
         }
@@ -28,12 +28,12 @@ namespace MyTexterBot.Controller
             var fileId = message.Voice?.FileId;
             if (fileId == null)
                 return;
+
             await _audioFileHandler.Download(fileId, ct);
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообзщение загружено", cancellationToken: ct);
-            var userLanguageCode = _storage.GetSession(message.Chat.Id).LanguageCode;
-            _audioFileHandler.Process(userLanguageCode!);
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Голосовое сообщение конвертировано в формат .WAV",
-                cancellationToken: ct);
+
+            string userLanguageCode = _memoryMemoryStorage.GetSession(message.Chat.Id).LanguageCode!; // Здесь получим язык из сессии пользователя
+            var result = _audioFileHandler.Process(userLanguageCode); // Запустим обработку
+            await _telegramClient.SendTextMessageAsync(message.Chat.Id, result, cancellationToken: ct);
         }
     }
 }
